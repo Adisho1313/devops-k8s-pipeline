@@ -32,8 +32,8 @@ From project root:
 docker build -f docker/backend.Dockerfile -t mekin2024/todo-backend:latest .
 docker build -f docker/frontend.Dockerfile -t mekin2024/todo-frontend:latest .
 
-docker push mekin2024/todo-backend:latest
-docker push mekin2024/todo-frontend:latest
+docker push adisho1313/todo-backend:latest
+docker push adisho1313/todo-frontend:latest
 ```
 
 ---
