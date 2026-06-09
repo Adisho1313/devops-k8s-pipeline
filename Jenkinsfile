@@ -16,7 +16,7 @@ pipeline {
 
   environment {
     REGISTRY = 'docker.io'
-    DOCKERHUB_NAMESPACE = 'mekin2024'
+    DOCKERHUB_NAMESPACE = 'Adisho1313'
     BACKEND_IMAGE = "${REGISTRY}/${DOCKERHUB_NAMESPACE}/todo-backend"
     FRONTEND_IMAGE = "${REGISTRY}/${DOCKERHUB_NAMESPACE}/todo-frontend"
     IMAGE_TAG = 'local'
