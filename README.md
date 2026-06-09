@@ -23,8 +23,8 @@ minikube start
 
 The deployment manifests use these images:
 
-- `mekin2024/todo-backend:latest` in `k8s/deployments/backend-deployment.yaml`
-- `mekin2024/todo-frontend:latest` in `k8s/deployments/frontend-deployment.yaml`
+- `adisho1313/todo-backend:latest` in `k8s/deployments/backend-deployment.yaml`
+- `adisho1313/todo-frontend:latest` in `k8s/deployments/frontend-deployment.yaml`
 
 From project root:
 
