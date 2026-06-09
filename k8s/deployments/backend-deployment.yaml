@@ -1,0 +1,46 @@
+# Backend API deployment (Node.js/Express).
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # Deployment name used by service selector and rollout commands.
+  name: backend
+  namespace: todo-app
+spec:
+  # Single replica for local environment; increase for high availability.
+  replicas: 1
+  selector:
+    # Must match template labels; this binds Deployment to its Pods.
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      # Pod label matched by backend-service selector.
+      labels:
+        app: backend
+    spec:
+      containers:
+        # Container name used by `kubectl set image deployment/backend backend=...`.
+        - name: backend
+          # Image built and pushed by CI pipeline.
+          image: mekin2024/todo-backend:latest
+          # Always pull latest tag on each pod start.
+          imagePullPolicy: Always
+          ports:
+            # Container port where backend process listens.
+            - containerPort: 5000
+          resources:
+            # Guaranteed minimum resources for scheduler placement.
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            # Hard upper limit to protect node from runaway usage.
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          envFrom:
+            # Load non-secret backend settings.
+            - configMapRef:
+                name: backend-config
+            # Load secret values including database URI.
+            - secretRef:
+                name: mongodb-secret

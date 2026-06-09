@@ -1,0 +1,43 @@
+# Frontend deployment (Next.js application).
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # Deployment name used by service selector and rollout commands.
+  name: frontend
+  namespace: todo-app
+spec:
+  # Single replica for local environment.
+  replicas: 1
+  selector:
+    # Must match pod template labels.
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      # Pod label consumed by frontend service selector.
+      labels:
+        app: frontend
+    spec:
+      containers:
+        # Container name used by image update commands.
+        - name: frontend
+          # Frontend image published by CI pipeline.
+          image: mekin2024/todo-frontend:latest
+          # Reuse local node cache when image tag already exists.
+          imagePullPolicy: IfNotPresent
+          ports:
+            # Next.js server listens on port 3000 in this container.
+            - containerPort: 3000
+          resources:
+            # Scheduler minimums.
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            # Resource ceiling.
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          env:
+            - name: BACKEND_INTERNAL_URL
+              # Internal service DNS so frontend proxy calls stay in-cluster.
+              value: http://backend-service:5000

@@ -1,0 +1,48 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+jenkins_key
+jenkins_key.pub
+node_modules/
+dockerhub_credentials.yaml
+jenkins_sandbox_home/dockerhub_credentials.yaml
+jenkins_sandbox_home/kubeconfig-jenkins.yaml
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+.next
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+#  Jenkins 
+/jenkins_sandbox_home/jenkins_home
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts

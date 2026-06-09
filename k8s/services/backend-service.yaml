@@ -1,0 +1,19 @@
+# Service exposing backend pods on stable DNS name and virtual IP.
+apiVersion: v1
+kind: Service
+metadata:
+  # Service DNS: backend-service.todo-app.svc.cluster.local
+  name: backend-service
+  namespace: todo-app
+spec:
+  selector:
+    # Routes traffic to pods labeled app=backend.
+    app: backend
+  ports:
+    # Service port clients use inside cluster.
+    - port: 5000
+      # Container port on selected backend pods.
+      targetPort: 5000
+      protocol: TCP
+  # NodePort allows direct node-level access in local clusters.
+  type: NodePort

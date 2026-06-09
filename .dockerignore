@@ -1,0 +1,14 @@
+# Ignore dependencies and build output
+**/node_modules
+**/.next
+
+# VCS and env files
+**/.git
+**/.env
+**/.env.*
+
+# Logs
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+**/pnpm-debug.log*

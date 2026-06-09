@@ -1,0 +1,13 @@
+# ConfigMap stores non-secret environment variables for the backend pod.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  # Referenced by backend deployment through envFrom.configMapRef.
+  name: backend-config
+  namespace: todo-app
+data:
+  # Express server listening port inside backend container.
+  PORT: "5000"
+  # Allowed origin for browser requests.
+  # Uses service DNS name so traffic stays inside the cluster network.
+  CLIENT_ORIGIN: "http://frontend-service:3000"

@@ -1,0 +1,21 @@
+# Kustomize entrypoint for the entire Todo app stack.
+# Running `kubectl apply -k k8s/` applies every resource listed below.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+# Forces all namespaced resources in this bundle into the same namespace.
+namespace: todo-app
+resources:
+  # Namespace must exist before namespaced resources are created.
+  - namespace/todo-namespace.yaml
+  # Non-sensitive app settings for backend container.
+  - configmaps/backend-configmap.yaml
+  # Secret template used by the backend to connect to MongoDB Atlas.
+  - secrets/mongodb-secret.example.yaml
+  # Workloads.
+  - deployments/backend-deployment.yaml
+  - deployments/frontend-deployment.yaml
+  # Service discovery and internal/external exposure.
+  - services/backend-service.yaml
+  - services/frontend-service.yaml
+  # HTTP entrypoint with host/path routing.
+  - ingress/app-ingress.yaml

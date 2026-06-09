@@ -1,0 +1,51 @@
+      # Jenkins sandbox stack for local CI/CD testing.
+      services:
+        # Main Jenkins controller service (web UI + pipeline executor).
+        jenkins:
+          # Build the Jenkins image from this repo so required tools are preinstalled.
+          build:
+            # Use repository root as build context so Dockerfile can access project files.
+            context: ..
+            # Custom Dockerfile that adds tools such as kubectl/docker/node.
+            dockerfile: docker/jenkins.Dockerfile
+          # Tag for the locally built Jenkins image.
+          image: mekin2024/jenkins-devops-tools:local
+          # Stable container name for easier docker logs/exec/debug commands.
+          container_name: jenkins_sandbox
+          # Required for low-level operations often used in sandbox CI environments.
+          privileged: true
+          # Run as root so Jenkins can access docker.sock and mounted kube files.
+          user: root
+          ports:
+            - "8080:8080"
+            - "50000:50000"
+
+          # Use host networking so container shares host network namespace.
+          # This simplifies access to local Minikube/Kubernetes endpoints.
+          # network_mode: host
+
+          volumes:
+            # Persist Jenkins home (jobs, plugins, credentials, workspace metadata).
+            - ${JENKINS_HOME_PATH:-./jenkins_home}:/var/jenkins_home
+            # Mount host Docker socket so Jenkins can run docker build/push commands.
+            - /var/run/docker.sock:/var/run/docker.sock
+            # Mount host kubeconfig so kubectl in Jenkins targets your host cluster context.
+            - ${HOME}/.kube:/root/.kube
+
+        # Optional inbound SSH agent container for distributed Jenkins builds.
+        agent:
+          # Official Jenkins SSH agent image with JDK 11.
+          image: jenkins/ssh-agent:jdk11
+          # Stable name for troubleshooting or manual connectivity checks.
+          container_name: jenkins_sandbox_agent
+          # Privileged mode kept to match controller sandbox permissions model.
+          privileged: true
+          # Run as root for fewer permission issues in local experimentation.
+          user: root
+
+          # Match controller networking behavior for predictable communication.
+          # network_mode: host
+
+          environment:
+            # Public key injected into agent authorized_keys for Jenkins SSH login.
+            - JENKINS_AGENT_SSH_PUBKEY=${JENKINS_AGENT_SSH_PUBLIC_KEY:-}

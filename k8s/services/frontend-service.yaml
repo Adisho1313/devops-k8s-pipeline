@@ -1,0 +1,21 @@
+# Service exposing frontend pods.
+apiVersion: v1
+kind: Service
+metadata:
+  # Service DNS: frontend-service.todo-app.svc.cluster.local
+  name: frontend-service
+  namespace: todo-app
+spec:
+  selector:
+    # Routes traffic to pods labeled app=frontend.
+    app: frontend
+  ports:
+    # Internal service port.
+    - port: 3000
+      # Frontend container listening port.
+      targetPort: 3000
+      protocol: TCP
+      # Fixed node port to simplify local access and troubleshooting.
+      nodePort: 30080
+  # NodePort is useful for local/minikube environments.
+  type: LoadBalancer

@@ -1,0 +1,7 @@
+# Legacy placeholder file retained for compatibility with older paths.
+#
+# Active service manifests are located in:
+# - services/frontend-service.yaml
+# - services/backend-service.yaml
+#
+# This file intentionally contains comments only and is not used by kustomization.yaml.

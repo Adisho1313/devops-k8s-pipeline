@@ -1,0 +1,29 @@
+# Ingress provides host/path-based HTTP routing into the cluster.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  # Referenced in operational checks and ingress debugging.
+  name: todo-app-ingress
+  namespace: todo-app
+spec:
+  rules:
+    # Hostname expected in incoming HTTP requests.
+    - host: todo.local
+      http:
+        paths:
+          # Route API traffic to backend service.
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: backend-service
+                port:
+                  number: 5000
+          # Route all other traffic to frontend service.
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-service
+                port:
+                  number: 3000

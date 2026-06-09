@@ -1,0 +1,6 @@
+# Dedicated namespace to isolate all Todo app resources.
+apiVersion: v1
+kind: Namespace
+metadata:
+  # Namespace referenced by deployments, services, and ingress.
+  name: todo-app
