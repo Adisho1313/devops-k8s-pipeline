@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Fullstack Todo App (Next.js + Express + MongoDB Atlas on Kubernetes)
 
 This guide shows how to run the app step by step by applying the Kubernetes deployment manifests in this repository.
@@ -275,3 +276,6 @@ Or full DNS:
 For browser-side code, prefer an API route/proxy or a public URL; direct ClusterIP/DNS is only reachable from inside the cluster network.
 
 
+=======
+# devops-k8s-pipeline
+>>>>>>> 192abdce84349c8c58d426341a98f33d643a5f53
