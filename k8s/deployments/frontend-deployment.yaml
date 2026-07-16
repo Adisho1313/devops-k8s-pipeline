@@ -22,7 +22,7 @@ spec:
         # Container name used by image update commands.
         - name: frontend
           # Frontend image published by CI pipeline.
-          image: Adisho1313/todo-frontend:latest
+          image: adisho1313/todo-frontend:latest
           # Reuse local node cache when image tag already exists.
           imagePullPolicy: IfNotPresent
           ports:

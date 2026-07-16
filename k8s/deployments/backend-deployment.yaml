@@ -22,7 +22,7 @@ spec:
         # Container name used by `kubectl set image deployment/backend backend=...`.
         - name: backend
           # Image built and pushed by CI pipeline.
-          image: Adisho1313/todo-backend:latest
+          image: adisho1313/todo-backend:latest
           # Always pull latest tag on each pod start.
           imagePullPolicy: Always
           ports:
