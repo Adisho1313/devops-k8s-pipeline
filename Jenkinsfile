@@ -20,18 +20,6 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
-            steps {
-                echo 'Installing packages...'
-                dir('backend') {
-                    sh 'npm install'
-                }
-                dir('frontend') {
-                    sh 'npm install'
-                }
-            }
-        }
-
         stage('Build Docker Images') {
             steps {
                 echo 'Building Docker Images...'
