@@ -1,8 +1,14 @@
 pipeline {
     agent any
-tools {
+
+    tools {
+        // ይህ ጄንኪንስ በ Tools ላይ ያዋቀርነውን ዶከር እንዲጠቀም ያደርገዋል
         dockerTool 'my-docker'
     }
+
+    environment {
+        DOCKER_USER = 'adisho1313'
+...
     environment {
         // የዶከር ሃብ አካውንትህ ስም
         DOCKER_USER = 'adisho1313'
