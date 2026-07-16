@@ -1,6 +1,8 @@
 pipeline {
     agent any
-
+tools {
+        dockerTool 'my-docker'
+    }
     environment {
         // የዶከር ሃብ አካውንትህ ስም
         DOCKER_USER = 'adisho1313'
