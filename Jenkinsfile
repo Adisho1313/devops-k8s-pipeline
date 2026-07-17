@@ -31,6 +31,21 @@ pipeline {
                 }
             }
         }
+        
+        stage('Push to Docker Hub') {
+    steps {
+        script {
+            docker.withRegistry('', 'docker-hub-credentials-id') {
+                sh '''
+                    # ለሶስት ጊዜ ለመላክ ይሞክራል፣ ካልተሳካ ለ30 ሰከንድ ታግሶ እንደገና ይሞክራል
+                    for i in {1..3}; do
+                        docker push adisho1313/fullstack-frontend:latest && break || sleep 30
+                    done
+                '''
+            }
+        }
+    }
+}
 
         stage('Deploy to Kubernetes') {
             steps {
