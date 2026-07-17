@@ -34,15 +34,16 @@ pipeline {
         
         stage('Push to Docker Hub') {
     steps {
-        script {
-            docker.withRegistry('', 'docker-hub-credentials-id') {
-                sh '''
-                    # ለሶስት ጊዜ ለመላክ ይሞክራል፣ ካልተሳካ ለ30 ሰከንድ ታግሶ እንደገና ይሞክራል
-                    for i in {1..3}; do
-                        docker push adisho1313/fullstack-frontend:latest && break || sleep 30
-                    done
-                '''
-            }
+        // ከዚህ በታች ባለው 'credentialsId' ቦታ ላይ ያገኘኸውን ID አስገባ
+        withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+            sh '''
+                echo $PASS | docker login -u $USER --password-stdin
+                
+                # ለሶስት ጊዜ ለመላክ ይሞክራል፣ ካልተሳካ ለ30 ሰከንድ ታግሶ እንደገና ይሞክራል
+                for i in {1..3}; do
+                    docker push adisho1313/fullstack-backend:latest && docker push adisho1313/fullstack-frontend:latest && break || sleep 30
+                done
+            '''
         }
     }
 }
