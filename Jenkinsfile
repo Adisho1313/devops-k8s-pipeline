@@ -25,28 +25,17 @@ pipeline {
         stage('Push to Docker Hub') {
             steps {
                 withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'USER', passwordVariable: 'PASS')]) {
-                    sh "echo ${PASS} | docker login -u ${USER} --password-stdin"
-                    sh "docker push ${BACKEND_IMAGE}"
-                    sh "docker push ${FRONTEND_IMAGE}"
+                    sh '''
+                        echo ${PASS} | docker login -u ${USER} --password-stdin
+                        
+                        # ለሶስት ጊዜ ለመላክ ይሞክራል፣ ካልተሳካ ለ30 ሰከንድ ታግሶ እንደገና ይሞክራል
+                        for i in {1..3}; do
+                            docker push ${BACKEND_IMAGE} && docker push ${FRONTEND_IMAGE} && break || sleep 30
+                        done
+                    '''
                 }
             }
         }
-        
-        stage('Push to Docker Hub') {
-    steps {
-        // ከዚህ በታች ባለው 'credentialsId' ቦታ ላይ ያገኘኸውን ID አስገባ
-        withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-            sh '''
-                echo $PASS | docker login -u $USER --password-stdin
-                
-                # ለሶስት ጊዜ ለመላክ ይሞክራል፣ ካልተሳካ ለ30 ሰከንድ ታግሶ እንደገና ይሞክራል
-                for i in {1..3}; do
-                    docker push adisho1313/fullstack-backend:latest && docker push adisho1313/fullstack-frontend:latest && break || sleep 30
-                done
-            '''
-        }
-    }
-}
 
         stage('Deploy to Kubernetes') {
             steps {
