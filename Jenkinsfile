@@ -46,6 +46,6 @@ pipeline {
         sh 'kubectl rollout restart deployment/frontend-deploy --insecure-skip-tls-verify'
     }
 }
-        }
+        
     }
 }
