@@ -37,14 +37,15 @@ pipeline {
             }
         }
 
-        stage('Deploy to Kubernetes') {
-            steps {
-                sh 'kubectl apply -f k8s/mongo-deployment.yaml'
-                sh 'kubectl apply -f k8s/backend-deploy.yaml'
-                sh 'kubectl apply -f k8s/frontend-deploy.yaml'
-                sh "kubectl rollout restart deployment/backend-deploy"
-                sh "kubectl rollout restart deployment/frontend-deploy"
-            }
+       stage('Deploy to Kubernetes') {
+    steps {
+        sh 'kubectl apply -f k8s/mongo-deployment.yaml --insecure-skip-tls-verify'
+        sh 'kubectl apply -f k8s/backend-deploy.yaml --insecure-skip-tls-verify'
+        sh 'kubectl apply -f k8s/frontend-deploy.yaml --insecure-skip-tls-verify'
+        sh 'kubectl rollout restart deployment/backend-deploy --insecure-skip-tls-verify'
+        sh 'kubectl rollout restart deployment/frontend-deploy --insecure-skip-tls-verify'
+    }
+}
         }
     }
 }
